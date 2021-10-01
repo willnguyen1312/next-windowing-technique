@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { stuff } from "../../interfaces";
+import { Stuff } from "../../interfaces";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const cursor = parseInt(req.query.cursor as string) || 0;
   const pageSize = 5;
 
-  const data: stuff[] = Array.from({ length: pageSize }, (_, index) => {
+  const data: Stuff[] = Array.from({ length: pageSize }, (_, index) => {
     const id = index + cursor;
     return {
       id,

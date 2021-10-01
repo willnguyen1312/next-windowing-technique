@@ -13,7 +13,7 @@ import {
 
 import { ReactQueryDevtools } from "react-query/devtools";
 
-import { stuff } from "../interfaces";
+import { Stuff } from "../interfaces";
 
 const queryClient = new QueryClient();
 
@@ -48,9 +48,9 @@ function Sample() {
 
   const parentRef = React.useRef<HTMLDivElement>(null);
 
-  const normalizedData: undefined | stuff[] = useMemo(
+  const normalizedData: undefined | Stuff[] = useMemo(
     () =>
-      data?.pages.reduce((acc: stuff[], cur: { data: stuff[] }) => {
+      data?.pages.reduce((acc: Stuff[], cur: { data: Stuff[] }) => {
         acc.push(...cur.data);
         return acc;
       }, []),
@@ -93,7 +93,7 @@ function Sample() {
         >
           {rowVirtualizer.virtualItems.map((virtualRow) => {
             const isLoaderRow = virtualRow.index > normalizedData.length - 1;
-            const project: stuff = normalizedData[virtualRow.index];
+            const project: Stuff = normalizedData[virtualRow.index];
 
             return (
               <div
