@@ -11,10 +11,12 @@ specifiers:
   eslint-config-next: 11.1.2
   lodash-es: ^4.17.21
   next: latest
+  next-seo: ^4.28.1
   postcss: ^8.3.5
   react: ^17.0.2
   react-dom: ^17.0.2
   react-query: ^3.24.5
+  react-virtual: ^2.8.2
   tailwindcss: ^2.2.4
   tslib: ^2.3.1
   typescript: '4.4'
@@ -23,9 +25,11 @@ dependencies:
   axios: 0.21.4
   lodash-es: 4.17.21
   next: 11.1.2_bd7797d63db473de6e2318609a63c933
+  next-seo: 4.28.1_6fbf59523517da779df50d355b375324
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-query: 3.24.5_react-dom@17.0.2+react@17.0.2
+  react-virtual: 2.8.2_react@17.0.2
 
 devDependencies:
   '@types/lodash-es': 4.17.5
@@ -264,6 +268,10 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
     dev: true
+
+  /@reach/observe-rect/1.2.0:
+    resolution: {integrity: sha512-Ba7HmkFgfQxZqqaeIWWkNK0rEhpxVQHIoVyW1YDSkGsGIXzcaW4deC8B0pZrNSSyLTdIk7y+5olKt5+g0GmFIQ==}
+    dev: false
 
   /@rushstack/eslint-patch/1.0.7:
     resolution: {integrity: sha512-3Zi2LGbCLDz4IIL7ir6wD0u/ggHotLkK5SlVzFzTcYaNgPR4MAt/9JYZqXWKcofPWEoptfpnCJU8Bq9sxw8QUg==}
@@ -2290,6 +2298,18 @@ packages:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
     dev: true
 
+  /next-seo/4.28.1_6fbf59523517da779df50d355b375324:
+    resolution: {integrity: sha512-WZgwdM+UhpNF3A37zFllzmPhnOVJ9vYeYlc0n3Z/kYfz/QQgy8NEdncNNggS9dU4JD8xriaCcyknhy5OsrFsJw==}
+    peerDependencies:
+      next: ^8.1.1-canary.54 || >=9.0.0
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      next: 11.1.2_bd7797d63db473de6e2318609a63c933
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
   /next/11.1.2_bd7797d63db473de6e2318609a63c933:
     resolution: {integrity: sha512-azEYL0L+wFjv8lstLru3bgvrzPvK0P7/bz6B/4EJ9sYkXeW8r5Bjh78D/Ol7VOg0EIPz0CXoe72hzAlSAXo9hw==}
     engines: {node: '>=12.0.0'}
@@ -2938,6 +2958,15 @@ packages:
   /react-refresh/0.8.3:
     resolution: {integrity: sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /react-virtual/2.8.2_react@17.0.2:
+    resolution: {integrity: sha512-CwnvF/3Jev4M14S9S7fgzGc0UFQ/bG/VXbrUCq+AB0zH8WGnVDTG0lQT7O3jPY76YLPzTHBu+AMl64Stp8+exg==}
+    peerDependencies:
+      react: ^16.6.3 || ^17.0.0
+    dependencies:
+      '@reach/observe-rect': 1.2.0
+      react: 17.0.2
     dev: false
 
   /react/17.0.2:

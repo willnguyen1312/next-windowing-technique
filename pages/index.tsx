@@ -1,75 +1,131 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import axios from "axios";
+import { NextSeo } from "next-seo";
+import Image from "next/image";
 
+import { useVirtual } from "react-virtual";
+import { last } from "lodash-es";
 import {
   useInfiniteQuery,
   QueryClient,
   QueryClientProvider,
 } from "react-query";
+
 import { ReactQueryDevtools } from "react-query/devtools";
 
-import { useIntersectionObserver } from "../hooks";
-import { Project } from "../interfaces";
+import { stuff } from "../interfaces";
 
 const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Sample />
-      <ReactQueryDevtools initialIsOpen position="bottom-right" />
+      <main className="m-12 w-1/2 border-green-300 border-solid border-2 p-4">
+        <NextSeo
+          title="Next.js with Windowing playground"
+          description="This is my playground with next.js, react-query, react-virtual and tailwind"
+        />
+        <Sample />
+        <ReactQueryDevtools initialIsOpen position="bottom-right" />
+      </main>
     </QueryClientProvider>
   );
 }
 
 function Sample() {
-  const {
-    status,
-    data,
-    isFetching,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
-    fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-  } = useInfiniteQuery(
-    "projects",
-    async ({ pageParam = 0 }) => {
-      const res = await axios.get("/api/projects?cursor=" + pageParam);
-      return res.data;
-    },
-    {
-      getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
-      getNextPageParam: (lastPage) => lastPage.nextId ?? false,
-    }
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteQuery(
+      "stuff",
+      async ({ pageParam = 0 }) => {
+        const res = await axios.get("/api/stuff?cursor=" + pageParam);
+        return res.data;
+      },
+      {
+        getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
+        getNextPageParam: (lastPage) => lastPage.nextId ?? false,
+      }
+    );
+
+  const parentRef = React.useRef<HTMLDivElement>(null);
+
+  const normalizedData: undefined | stuff[] = useMemo(
+    () =>
+      data?.pages.reduce((acc: stuff[], cur: { data: stuff[] }) => {
+        acc.push(...cur.data);
+        return acc;
+      }, []),
+    [data?.pages]
   );
 
-  const loadMoreButtonRef = React.useRef<HTMLButtonElement>(null);
-
-  useIntersectionObserver({
-    target: loadMoreButtonRef,
-    onIntersect: fetchNextPage,
-    enabled: Boolean(hasNextPage),
+  const currentSize = normalizedData?.length ?? 0;
+  const rowVirtualizer = useVirtual({
+    size: hasNextPage ? currentSize + 1 : currentSize,
+    parentRef,
+    estimateSize: React.useCallback(() => 150, []),
+    overscan: 5,
   });
 
-  if (data) {
+  useEffect(() => {
+    const lastItem = last(rowVirtualizer.virtualItems);
+    if (!lastItem) {
+      return;
+    }
+
+    if (lastItem.index === currentSize && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [
+    currentSize,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    rowVirtualizer.virtualItems,
+  ]);
+
+  if (normalizedData) {
     return (
-      <div className="m-12">
-        {data.pages.map((page) => (
-          <React.Fragment key={page.nextId}>
-            {page.data.map((project: Project) => (
-              <p
-                className="border-2 border-solid border-purple-600 border-r-4 py-40 px-4"
-                key={project.id}
+      <div ref={parentRef} className="h-[600px] w-full overflow-auto">
+        <div
+          className="w-full relative"
+          style={{
+            height: `${rowVirtualizer.totalSize}px`,
+          }}
+        >
+          {rowVirtualizer.virtualItems.map((virtualRow) => {
+            const isLoaderRow = virtualRow.index > normalizedData.length - 1;
+            const project: stuff = normalizedData[virtualRow.index];
+
+            return (
+              <div
+                key={virtualRow.index}
+                className="absolute top-0 left-0 w-full"
+                style={{
+                  height: `${virtualRow.size}px`,
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
               >
-                {project.name}
-              </p>
-            ))}
-          </React.Fragment>
-        ))}
-        <div>
-          {isFetching && !isFetchingNextPage ? "Background Updating..." : null}
+                {isLoaderRow ? (
+                  hasNextPage ? (
+                    "Loading more..."
+                  ) : (
+                    "Nothing more to load"
+                  )
+                ) : (
+                  <div>
+                    <div className="flex m-2">
+                      <Image
+                        width={100}
+                        height={100}
+                        src={project.imageUrl}
+                        alt={`Stuff ${project.id}`}
+                      />
+                      <p>{project.name}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
