@@ -50,7 +50,7 @@ function Sample() {
   useIntersectionObserver({
     target: loadMoreButtonRef,
     onIntersect: fetchNextPage,
-    enabled: hasNextPage,
+    enabled: Boolean(hasNextPage),
   });
 
   if (data) {

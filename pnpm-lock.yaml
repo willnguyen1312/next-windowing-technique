@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/lodash-es': ^4.17.5
   '@types/node': ^16.10.2
   '@types/react': ^17.0.26
   '@types/react-dom': ^17.0.9
@@ -8,6 +9,7 @@ specifiers:
   axios: ^0.21.4
   eslint: 7.32.0
   eslint-config-next: 11.1.2
+  lodash-es: ^4.17.21
   next: latest
   postcss: ^8.3.5
   react: ^17.0.2
@@ -19,12 +21,14 @@ specifiers:
 
 dependencies:
   axios: 0.21.4
+  lodash-es: 4.17.21
   next: 11.1.2_bd7797d63db473de6e2318609a63c933
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-query: 3.24.5_react-dom@17.0.2+react@17.0.2
 
 devDependencies:
+  '@types/lodash-es': 4.17.5
   '@types/node': 16.10.2
   '@types/react': 17.0.26
   '@types/react-dom': 17.0.9
@@ -267,6 +271,16 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
+    dev: true
+
+  /@types/lodash-es/4.17.5:
+    resolution: {integrity: sha512-SHBoI8/0aoMQWAgUHMQ599VM6ZiSKg8sh/0cFqqlQQMyY9uEplc0ULU5yQNzcvdR4ZKa0ey8+vFmahuRbOCT1A==}
+    dependencies:
+      '@types/lodash': 4.14.175
+    dev: true
+
+  /@types/lodash/4.14.175:
+    resolution: {integrity: sha512-XmdEOrKQ8a1Y/yxQFOMbC47G/V2VDO1GvMRnl4O75M4GW/abC5tnfzadQYkqEveqRM1dEJGFFegfPNA2vvx2iw==}
     dev: true
 
   /@types/node/16.10.2:
@@ -2125,6 +2139,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       p-locate: 4.1.0
+    dev: false
+
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
   /lodash.clonedeep/4.5.0:
